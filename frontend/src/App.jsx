@@ -1,8 +1,10 @@
+// frontend/src/App.jsx
+
 import React from 'react';
 
- // import PhotoListItem from './components/PhotoListItem';
- import PhotoList from './components/PhotoList';
- import './App.scss';
+import PhotoListItem from './components/PhotoListItem';
+import PhotoList from './components/PhotoList';
+import './App.scss';
 
 const sampleDataForPhotoListItem = {
   id: "1",
@@ -15,8 +17,12 @@ const sampleDataForPhotoListItem = {
   profile: `${process.env.PUBLIC_URL}/profile-1.jpg`,
 };
 
- const App = () => (
-   <div className="App">
-     {/* The rest of your React code */}
-   </div>
- )
+// Note: Rendering a single component to build components in isolation
+const App = () => (
+  <div className="App">
+    <PhotoListItem photoData={sampleDataForPhotoListItem} />
+    {/* Render other components or lists of PhotoListItem here */}
+  </div>
+);
+
+export default App

@@ -1,21 +1,56 @@
-//PhotoListItem.jsx
-import React from "react";
+import React from 'react';
+import '../styles/PhotoListItem.scss';
+import PhotoFavButton from './PhotoFavButton';
 
-import "../styles/PhotoListItem.scss";
+const PhotoListItem = ({
+  id,
+  imageSource,
+  username,
+  profile,
+  city,
+  country,
+  setSelectedPhoto,
+  setShowModal,
+  toggleFavorite,
+}) => {
+  const openModal = () => {
+    setSelectedPhoto(id);
+    setShowModal(true);
+  };
 
-
-const PhotoListItem = ({ photoData }) => {
   return (
-    <div className="photo-list-item" key={photoData.id}>
-      {/* Render the photo data using props */}
-      <img src={photoData.imageSource} alt={`Photo by ${photoData.username}`} />
-      <div className="photo-details">
-        <p>{photoData.location.city}, {photoData.location.country}</p>
-        <p>{photoData.username}</p>
-        <img src={photoData.profile} alt={`Profile of ${photoData.username}`} />
+    <div className="photo-list__container">
+      <div className="photo-list__item">
+        <PhotoFavButton photoId={id} toggleFavorite={toggleFavorite} />
+        <img
+          onClick={openModal}
+          src={imageSource}
+          alt={username}
+          className="photo-list__image"
+        />
+        <div className="photo-list__user-details">
+          <img className="photo-list__user-profile" src={profile} alt={username} />
+          <div className="photo-list__user-info">
+            {username}
+            <p className="photo-list__user-location">
+              {city}, {country}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
+};
+
+PhotoListItem.defaultProps = {
+  id: '1',
+  location: {
+    city: 'Montreal',
+    country: 'Canada',
+  },
+  imageSource: `${process.env.PUBLIC_URL}/Image-1-Regular.jpeg`,
+  username: 'Joe Example',
+  profile: `${process.env.PUBLIC_URL}/profile-1.jpg`,
 };
 
 export default PhotoListItem;

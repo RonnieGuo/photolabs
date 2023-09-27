@@ -3,7 +3,6 @@ import "./App.scss";
 import "./styles/HomeRoute.scss";
 import HomeRoute from "./routes/HomeRoute";
 import useApplicationData from "./hooks/useApplicationData";
-
 import PhotoDetailsModal from "./routes/PhotoDetailsModal";
 
 const App = () => {
@@ -64,6 +63,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <div>Hello </div>
       <HomeRoute
         handleTopicClick={handleTopicClick}
         photos={photos}

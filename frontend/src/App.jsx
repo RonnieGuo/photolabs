@@ -8,7 +8,7 @@ import mockPhotos from './mocks/photos';
 import mockTopics from './mocks/topics';
 
 const App = () => {
-  const { favorites, showModal, selectedPhoto, toggleFavorite, closeModal, setSelectedPhoto, setShowModal } = useApplicationData();
+  const { favorites, showModal, selectedPhoto, toggleFavorite, setShowModal } = useApplicationData();
 
   const [photos, setPhotos] = useState(mockPhotos);
   const [topics, setTopics] = useState(mockTopics);
@@ -65,7 +65,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <div>Hello </div>
       <HomeRoute
         handleTopicClick={handleTopicClick}
         photos={photos}

@@ -28,11 +28,11 @@ const PhotoListItem = ({
           alt={username}
           className="photo-list__image"
         />
-        <div className="photo-list__user-details">
-          <img className="photo-list__user-profile" src={profile} alt={username} />
-          <div className="photo-list__user-info">
+        <div className='photo-list__user-details'>
+          <img className='photo-list__user-profile' src={profile} alt={username} />
+          <div className='photo-list__user-info'>
             {username}
-            <p className="photo-list__user-location">
+            <p className='photo-list__user-location'>
               {city}, {country}
             </p>
           </div>

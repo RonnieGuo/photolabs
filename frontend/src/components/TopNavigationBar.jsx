@@ -1,45 +1,26 @@
-import React from "react";
-import "../styles/TopNavigationBar.scss";
-import TopicList from "./TopicList";
-import FavIcon from "./FavIcon";
-import FavouriteContent from "./FavouriteContent";
+import React from 'react';
+import '../styles/TopNavigationBar.scss';
+import TopicList from './TopicList';
+import FavBadge from './FavBadge';
 
-const TopNavigation = ({
-  favouriteCount,
-  favouritePhotos,
-  photos,
-  handleTopicClick,
-  topics,
-}) => {
-  // Determine if an alert should be displayed based on favouriteCount
-  const displayAlert = favouriteCount > 0;
-
-  // Fill color for the favorites badge
-  const fill = "#C80000";
+const TopNavigation = ({ topics, isFavPhotoExist, updatePhotosByTopics }) => {
+  const handleLogoClick = () => {
+    // Handle clicking the logo, for example, returning to the default view.
+    updatePhotosByTopics(false);
+  };
 
   return (
     <div className="top-nav-bar">
       {/* Logo */}
-      <span className="top-nav-bar--logo">PhotoLabs</span>
+      <span className="top-nav-bar__logo" onClick={handleLogoClick}>
+        PhotoLabs
+      </span>
 
       {/* Topic List */}
-      <div className="top-nav-bar--topic-list">
-        <TopicList handleTopicClick={handleTopicClick} topics={topics} />
-      </div>
-
-      {/* Sidebar for Favorites */}
-      <div className="sidebar">
-        <FavouriteContent
-          favouritePhotos={favouritePhotos}
-          photos={photos}
-          favouriteCount={favouriteCount}
-        />
-      </div>
+      <TopicList topics={topics} updatePhotosByTopics={updatePhotosByTopics} />
 
       {/* Favorites Badge */}
-      <div className="top-nav-bar--badge">
-        {<FavIcon fill={fill} displayAlert={displayAlert} />}
-      </div>
+      <FavBadge isFavPhotoExist={isFavPhotoExist} />
     </div>
   );
 };

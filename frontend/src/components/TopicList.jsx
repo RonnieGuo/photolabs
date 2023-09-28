@@ -1,35 +1,22 @@
 import React from "react";
-import TopicListItem from './TopicListItem';
-import "../styles/TopicListItem.scss";
-import "../styles/TopicList.scss";
+import PhotoListItem from './PhotoListItem';
+import "../styles/PhotoList.scss";
 
-const sampleDataForTopicList = [
-  {
-    id: "1",
-    slug: "topic-1",
-    title: "Nature",
-  },
-  {
-    id: "2",
-    slug: "topic-2",
-    title: "Travel",
-  },
-  {
-    id: "3",
-    slug: "topic-3",
-    title: "People",
-  },
-];
-
-const TopicList = () => {
+const PhotoList = ({ photos, updateFavouritedPhotoIDs, updateModalData, photoIDs }) => {
   return (
-    <div className="top-nav-bar__topic-list">
-      {/* Map through the sampleDataForTopicList and render each topic */}
-      {sampleDataForTopicList.map((topic) => (
-        <TopicListItem key={topic.id} topic={topic} />
+    <ul className="photo-list">
+      {photos && photos.map((item) => (
+        <li key={item.id}>
+          <PhotoListItem
+            item={item}
+            updateFavouritedPhotoIDs={updateFavouritedPhotoIDs}
+            updateModalData={updateModalData}
+            photoIDs={photoIDs}
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
-export default TopicList;
+export default PhotoList;

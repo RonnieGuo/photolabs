@@ -1,52 +1,54 @@
-import React from 'react';
-import '../styles/HomeRoute.scss';
+import React from "react";
 import TopNavigation from "../components/TopNavigationBar";
 import PhotoList from "../components/PhotoList";
-
+import "../styles/HomeRoute.scss";
 
 const HomeRoute = ({
-  topics,
-  isFavPhotoExist,
-  updatePhotosByTopics,
   photos,
+  topics,
+  openModal,
+  isFavorite,
+  addToFavorites,
+  removeFromFavorites,
+  favoritePhotos,
   handleTopicClick,
-  favouriteCount,
-  favouritePhotos,
-  addToFavourites,
-  removeFromFavourites,
 }) => {
+
+  const favoriteCount = favoritePhotos ? favoritePhotos.length : 0;
+
+  const toggleFavorite = (photoId) => {
+    if (isFavorite(photoId)) {
+      removeFromFavorites(photoId);
+    } else {
+      addToFavorites(photoId);
+    }
+  };
+
   return (
     <div className="home-route">
-      {/* Top Navigation Bar */}
-      <TopNavigation
-        topics={topics}
-        isFavPhotoExist={isFavPhotoExist}
-        updatePhotosByTopics={updatePhotosByTopics}
-      />
-
-      {/* Photos Section */}
-      <div className="home-route__photos">
-        <h1>Explore Photos</h1>
-
-        {/* Display the favorite count */}
-        <div className="home-route__fav-count">
-          {favouriteCount > 0 && (
-            <span>
-              You have {favouriteCount} favorite photo(s).{' '}
-              <button onClick={() => updatePhotosByTopics(true)}>View Favorites</button>
-            </span>
-          )}
-        </div>
-
-        {/* Photo List */}
-        <PhotoList
+      <div className="nav-bar">
+        <TopNavigation
+          topics={topics}
+          favoriteCount={favoriteCount}
+          isFavPhotoExist={favoriteCount > 0}
+          favoritePhotos={favoritePhotos}
           photos={photos}
           handleTopicClick={handleTopicClick}
-          topics={topics}
-          favouritePhotos={favouritePhotos}
-          addToFavourites={addToFavourites}
-          removeFromFavourites={removeFromFavourites}
         />
+      </div>
+
+      <div className="photo-list">
+        {photos ? (
+          <PhotoList
+            openModal={openModal}
+            photos={photos}
+            isFavorite={isFavorite}
+            addToFavorites={addToFavorites} 
+            removeFromFavorites={removeFromFavorites}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </div>
   );

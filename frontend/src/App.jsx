@@ -8,7 +8,7 @@ import mockPhotos from './mocks/photos';
 import mockTopics from './mocks/topics';
 
 const App = () => {
-  const { favorites, showModal, selectedPhoto, toggleFavorite, setShowModal } = useApplicationData();
+  const { favorites, showModal, selectedPhoto, addToFavourites, toggleFavorite, setShowModal } = useApplicationData();
 
   const [photos, setPhotos] = useState(mockPhotos);
   const [topics, setTopics] = useState(mockTopics);

@@ -20,6 +20,9 @@ const reducer = (state, action) => {
     case 'SET_SELECTED_PHOTO':
       return { ...state, selectedPhoto: action.photo, showModal: true };
 
+    case 'SET_SHOW_MODAL':
+      return { ...state, showModal: action.showModal };
+
     default:
       return state;
   }

@@ -1,21 +1,44 @@
-import React from 'react';
-import '../styles/TopNavigationBar.scss';
-import FavBadge from './FavBadge';
-import TopicList from './TopicList'; 
+import React from "react";
+import "../styles/TopNavigationBar.scss";
+import TopicList from "./TopicList";
+import FavIcon from "./FavIcon";
+import FavouriteContent from "./FavouriteContent";
 
-const TopNavigation = () => {
+const TopNavigation = ({
+  favouriteCount,
+  favouritePhotos,
+  photos,
+  handleTopicClick,
+  topics,
+}) => {
+  // Determine if an alert should be displayed based on favouriteCount
+  const displayAlert = favouriteCount > 0;
+
+  // Fill color for the favorites badge
+  const fill = "#C80000";
+
   return (
     <div className="top-nav-bar">
-      <span className="top-nav-bar__logo">PhotoLabs</span>
-      <div className="top-nav-bar__icons">
-        <div className="top-nav-bar__icon">
-          <i className="fas fa-heart"></i>
-          <FavBadge count={0} /> 
-        </div>
-        <div className="top-nav-bar__icon">
-          <i className="fas fa-th"></i>
-          <TopicList /> 
-        </div>
+      {/* Logo */}
+      <span className="top-nav-bar--logo">PhotoLabs</span>
+
+      {/* Topic List */}
+      <div className="top-nav-bar--topic-list">
+        <TopicList handleTopicClick={handleTopicClick} topics={topics} />
+      </div>
+
+      {/* Sidebar for Favorites */}
+      <div className="sidebar">
+        <FavouriteContent
+          favouritePhotos={favouritePhotos}
+          photos={photos}
+          favouriteCount={favouriteCount}
+        />
+      </div>
+
+      {/* Favorites Badge */}
+      <div className="top-nav-bar--badge">
+        {<FavIcon fill={fill} displayAlert={displayAlert} />}
       </div>
     </div>
   );

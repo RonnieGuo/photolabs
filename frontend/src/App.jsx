@@ -4,12 +4,14 @@ import "./styles/HomeRoute.scss";
 import HomeRoute from "./routes/HomeRoute";
 import useApplicationData from "./hooks/useApplicationData";
 import PhotoDetailsModal from "./routes/PhotoDetailsModal";
+import mockPhotos from './mocks/photos';
+import mockTopics from './mocks/topics';
 
 const App = () => {
   const { favorites, showModal, selectedPhoto, toggleFavorite, closeModal, setSelectedPhoto, setShowModal } = useApplicationData();
 
-  const [photos, setPhotos] = useState([]);
-  const [topics, setTopics] = useState([]);
+  const [photos, setPhotos] = useState(mockPhotos);
+  const [topics, setTopics] = useState(mockTopics);
 
   const handleTopicClick = (topicId) => {
     if (topicId) {

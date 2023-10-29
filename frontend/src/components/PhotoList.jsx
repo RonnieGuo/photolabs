@@ -1,68 +1,30 @@
-import React from 'react';
-import PhotoListItem from './PhotoListItem';
-import '../styles/PhotoList.scss';
+import React from "react";
+
+import PhotoListItem from "./PhotoListItem";
+import "../styles/PhotoList.scss";
 
 const PhotoList = (props) => {
-  const list = props.photos.map((photo) => <PhotoListItem setSelectedPhoto={props.setSelectedPhoto} setShowModal={props.setShowModal} key={photo.id} imageSource={photo.urls.regular} id={photo.id} username={photo.username} city={photo.location.city} country={photo.location.country} toggleFavorite={props.toggleFavorite}/>)
-  return <ul className="photo-list">
-    {list}
-  </ul>
+  const { photos, favouritePhotos, addFavourite, delFavourite, openModal, scrollToTop } = props;
+
+  const photoItems = photos.map((photo) => (
+    <PhotoListItem
+      username={photo.user.username}
+      city={photo.location.city}
+      country={photo.location.country}
+      imageSource={photo.urls.regular}
+      userAvatar={photo.user.profile}
+      key={photo.id}
+      id={photo.id}
+      favouritePhotos={favouritePhotos}
+      isFavourite={favouritePhotos.includes(photo.id)}
+      addFavourite={addFavourite}
+      delFavourite={delFavourite}
+      openModal={openModal}
+      scrollToTop={scrollToTop}
+    />
+  ));
+
+  return <ul className="photo-list">{photoItems}</ul>;
 };
 
-PhotoList.defaultProps = {
-  photos: [
-    {
-      "id": "1",
-      "location": {
-        "city": "Montreal",
-        "country": "Canada"
-      },
-      "urls": {
-        "full": `${process.env.PUBLIC_URL}/Image-1-Full.jpeg`,
-        "regular": `${process.env.PUBLIC_URL}/Image-1-Regular.jpeg`
-      },
-      "user": {
-        "id": "1",
-        "username": "exampleuser",
-        "name": "Joe Example",
-        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
-      }
-    },
-    {
-      "id": "2",
-      "location": {
-        "city": "Toronto",
-        "country": "Canada"
-      },
-      "urls": {
-        "full": `${process.env.PUBLIC_URL}/Image-2-Full.jpeg`,
-        "regular": `${process.env.PUBLIC_URL}/Image-2-Regular.jpeg`
-      },
-      "user": {
-        "id": "2",
-        "username": "exampleuser",
-        "name": "Joe Example",
-        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
-      }
-    },
-    {
-      "id": "3",
-      "location": {
-        "city": "Ottawa",
-        "country": "Canada"
-      },
-      "urls": {
-        "full": `${process.env.PUBLIC_URL}/Image-3-Full.jpeg`,
-        "regular": `${process.env.PUBLIC_URL}/Image-3-Regular.jpeg`
-      },
-      "user": {
-        "id": "3",
-        "username": "exampleuser",
-        "name": "Joe Example",
-        "profile": `${process.env.PUBLIC_URL}/profile-1.jpg`
-      }
-    }
-   ]
-}
-
-export default PhotoList
+export default PhotoList;

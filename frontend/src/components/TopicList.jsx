@@ -1,22 +1,27 @@
 import React from "react";
-import PhotoListItem from './PhotoListItem';
-import "../styles/PhotoList.scss";
+import TopicListItem from "./TopicListItem";
+import "../styles/TopicList.scss";
 
-const PhotoList = ({ photos, updateFavouritedPhotoIDs, updateModalData, photoIDs }) => {
+const TopicList = ({ topics, selectedTopic, setSelectedTopic }) => {
+  const handleTopicClick = (topic) => {
+    setSelectedTopic(topic);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <ul className="photo-list">
-      {photos && photos.map((item) => (
-        <li key={item.id}>
-          <PhotoListItem
-            item={item}
-            updateFavouritedPhotoIDs={updateFavouritedPhotoIDs}
-            updateModalData={updateModalData}
-            photoIDs={photoIDs}
-          />
-        </li>
+    <div className="top-nav-bar--topic-list">
+      {topics.map((topic) => (
+        <TopicListItem
+          key={topic.id}
+          label={topic.title}
+          link="#"
+          onClick={() => handleTopicClick(topic)}
+          active={selectedTopic && selectedTopic === topic.id}
+        />
       ))}
-    </ul>
+    </div>
   );
+  
 };
 
-export default PhotoList;
+export default TopicList;

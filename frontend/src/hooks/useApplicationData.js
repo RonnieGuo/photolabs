@@ -1,107 +1,142 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useEffect } from "react";
 
-// Define action types as constants
-const SET_TOPICS = "SET_TOPICS";
-const OPEN_MODAL = "OPEN_MODAL";
-const CLOSE_MODAL = "CLOSE_MODAL";
-const SET_SIMILAR_PHOTOS = "SET_SIMILAR_PHOTOS";
-const ADD_TO_FAVOURITES = "ADD_TO_FAVOURITES";
-const REMOVE_FROM_FAVOURITES = "REMOVE_FROM_FAVOURITES";
-
-const initialState = {
-  isModalOpen: false,
-  selectedPhoto: null,
-  similarPhotos: [],
-  favouritePhotos: [],
-  topicsCategory: { topics: [] },
+export const ACTIONS = {
+  FAV_PHOTO_ADDED: "FAV_PHOTO_ADDED",
+  FAV_PHOTO_REMOVED: "FAV_PHOTO_REMOVED",
+  SET_PHOTO_DATA: "SET_PHOTO_DATA",
+  SET_TOPIC_DATA: "SET_TOPIC_DATA",
+  DISPLAY_PHOTO_DETAILS: "DISPLAY_PHOTO_DETAILS",
+  SET_SELECTED_TOPIC: "SET_SELECTED_TOPIC",
 };
 
-// Define your reducer function
+// reducer to update the current state
 function reducer(state, action) {
   switch (action.type) {
-    case SET_TOPICS:
+    case ACTIONS.FAV_PHOTO_ADDED:
       return {
         ...state,
-        topicsCategory: action.payload,
+        favouritePhotos: [...state.favouritePhotos, action.payload.photoId],
       };
-    case OPEN_MODAL:
-      return {
-        ...state,
-        isModalOpen: true,
-        selectedPhoto: action.payload,
-      };
-    case CLOSE_MODAL:
-      return {
-        ...state,
-        isModalOpen: false,
-        selectedPhoto: null,
-        similarPhotos: [],
-      };
-    case SET_SIMILAR_PHOTOS:
-      return {
-        ...state,
-        similarPhotos: action.payload,
-      };
-    case ADD_TO_FAVOURITES:
-      return {
-        ...state,
-        favouritePhotos: [...state.favouritePhotos, action.payload],
-      };
-    case REMOVE_FROM_FAVOURITES:
+    case ACTIONS.FAV_PHOTO_REMOVED:
       return {
         ...state,
         favouritePhotos: state.favouritePhotos.filter(
-          (fav) => fav.id !== action.payload.id
+          (id) => id !== action.payload.photoId
         ),
       };
+    case ACTIONS.SET_PHOTO_DATA:
+      return {
+        ...state,
+        photos: action.payload.photos,
+      };
+    case ACTIONS.SET_TOPIC_DATA:
+      return {
+        ...state,
+        topics: action.payload.topics,
+      };
+    case ACTIONS.DISPLAY_PHOTO_DETAILS:
+      return {
+        ...state,
+        selectedPhoto: action.payload.photoId,
+      };
+    case ACTIONS.SET_SELECTED_TOPIC:
+      return {
+        ...state,
+        selectedTopic: action.payload.topic ? action.payload.topic.id : null,
+      };
     default:
-      throw new Error(`Unsupported action type: ${action.type}`);
+      throw new Error(
+        `Tried to reduce with an unsupported action type: ${action.type}`
+      );
   }
 }
 
-// Define your custom hook
+// custom hook
 export default function useApplicationData() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
-
-  // Define your functions
-  const setTopics = (topics) => {
-    dispatch({ type: SET_TOPICS, payload: topics });
+  const initialState = {
+    selectedPhoto: null,
+    selectedTopic: "",
+    favouritePhotos: [],
+    photos: [],
+    topics: [],
   };
 
-  const openModal = async (photo) => {
-    dispatch({ type: OPEN_MODAL, payload: photo });
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const openModal = (photo) => {
+    dispatch({
+      type: ACTIONS.DISPLAY_PHOTO_DETAILS,
+      payload: { photoId: photo },
+    });
   };
 
   const closeModal = () => {
-    dispatch({ type: CLOSE_MODAL });
+    dispatch({
+      type: ACTIONS.DISPLAY_PHOTO_DETAILS,
+      payload: { photoId: null },
+    });
   };
 
-  const isFavourite = (photo) => {
-    if (!photo) {
-      return false;
-    }
-    return state.favouritePhotos.some((fav) => fav.id === photo.id);
+  const addFavourite = (photoId) => {
+    dispatch({ type: ACTIONS.FAV_PHOTO_ADDED, payload: { photoId } });
   };
 
-  const addToFavourites = (photo) => {
-    dispatch({ type: ADD_TO_FAVOURITES, payload: photo });
+  const delFavourite = (photoId) => {
+    dispatch({ type: ACTIONS.FAV_PHOTO_REMOVED, payload: { photoId } });
   };
 
-  const removeFromFavourites = (photo) => {
-    dispatch({ type: REMOVE_FROM_FAVOURITES, payload: photo });
+  const setSelectedTopic = (topic) => {
+    dispatch({ type: ACTIONS.SET_SELECTED_TOPIC, payload: { topic } });
   };
 
-  // Return your custom hook's API
+  // Fetch topic data and photo data from the API
+  useEffect(() => {
+    // Fetch topics
+    fetch("http://localhost:8001/api/topics")
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({
+          type: ACTIONS.SET_TOPIC_DATA,
+          payload: { topics: data },
+        });
+      })
+      .catch((error) => {
+        console.log("Error fetching topics:", error);
+      });
+
+    // Fetch photos based on the selected topic
+    let url = `http://localhost:8001/api/${
+      state.selectedTopic ? `topics/photos/${state.selectedTopic}` : "photos"
+    }`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({
+          type: ACTIONS.SET_PHOTO_DATA,
+          payload: { photos: data },
+        });
+      })
+      .catch((error) => {
+        console.log(
+          state.selectedTopic
+            ? "Error fetching photos by topic:"
+            : "Error fetching photos:",
+          error
+        );
+      });
+  }, [state.selectedTopic]);
+
   return {
-    setTopics,
-    isModalOpen: state.isModalOpen,
     selectedPhoto: state.selectedPhoto,
     favouritePhotos: state.favouritePhotos,
+    photos: state.photos,
+    topics: state.topics,
     openModal,
     closeModal,
-    isFavourite,
-    addToFavourites,
-    removeFromFavourites,
+    addFavourite,
+    delFavourite,
+    selectedTopic: state.selectedTopic,
+    setSelectedTopic,
   };
 }

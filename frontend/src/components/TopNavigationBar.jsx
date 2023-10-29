@@ -1,27 +1,27 @@
-import React from 'react';
-import '../styles/TopNavigationBar.scss';
-import "../styles/TopicList.scss";
-import TopicList from './TopicList';
-import FavBadge from './FavBadge';
+import React from "react";
+import TopicList from "./TopicList";
+import FavBadge from "./FavBadge";
+import "../styles/TopNavigationBar.scss";
 
-const TopNavigation = ({ topics, isFavPhotoExist, updatePhotosByTopics }) => {
+const TopNavigation = (props) => {
+  const { topics, favouritePhotos, selectedTopic, setSelectedTopic, closeModal } = props;
+
+  // Function to reset active topic, close modal if open, and scroll to the top when the logo is clicked
   const handleLogoClick = () => {
-    // Handle clicking the logo, for example, returning to the default view.
-    updatePhotosByTopics(false);
+    setSelectedTopic(null);
+    closeModal();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
+  
   return (
     <div className="top-nav-bar">
-      {/* Logo */}
-      <span className="top-nav-bar__logo" onClick={handleLogoClick}>
-        PhotoLabs
-      </span>
-
-      {/* Topic List */}
-      <TopicList topics={topics} updatePhotosByTopics={updatePhotosByTopics} />
-
-      {/* Favorites Badge */}
-      <FavBadge isFavPhotoExist={isFavPhotoExist} />
+      <span className="top-nav-bar--logo" onClick={handleLogoClick}>PhotoLabs</span>
+      <TopicList
+        topics={topics}
+        selectedTopic={selectedTopic}
+        setSelectedTopic={setSelectedTopic}
+      />
+      <FavBadge favouritePhotos={favouritePhotos} />
     </div>
   );
 };

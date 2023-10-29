@@ -1,56 +1,56 @@
-import React from 'react';
-import '../styles/PhotoListItem.scss';
-import PhotoFavButton from './PhotoFavButton';
+import React from "react";
+import PhotoFavButton from "./PhotoFavButton";
+import "../styles/PhotoListItem.scss";
 
-const PhotoListItem = ({
-  id,
-  imageSource,
-  username,
-  profile,
-  city,
-  country,
-  setSelectedPhoto,
-  setShowModal,
-  toggleFavorite,
-}) => {
-  const openModal = () => {
-    setSelectedPhoto(id);
-    setShowModal(true);
+const PhotoListItem = (props) => {
+  const {
+    id,
+    username,
+    userAvatar,
+    city,
+    country,
+    imageSource,
+    isFavourite,
+    favouritePhotos,
+    addFavourite,
+    delFavourite,
+    openModal,
+    scrollToTop,
+  } = props;
+
+  // Function to open modal and scroll to the top
+  const handleClick = () => {
+    openModal(id);
+    scrollToTop();
   };
 
   return (
-    <div className="photo-list__container">
-      <div className="photo-list__item">
-        <PhotoFavButton photoId={id} toggleFavorite={toggleFavorite} />
-        <img
-          onClick={openModal}
-          src={imageSource}
-          alt={username}
-          className="photo-list__image"
-        />
-        <div className='photo-list__user-details'>
-          <img className='photo-list__user-profile' src={profile} alt={username} />
-          <div className='photo-list__user-info'>
-            {username}
-            <p className='photo-list__user-location'>
-              {city}, {country}
-            </p>
+    <article className="photo-list--item">
+      {/* PhotoFavButton component for handling favorites */}
+      <PhotoFavButton
+        photoId={id}
+        favouritePhotos={favouritePhotos}
+        isFavourite={favouritePhotos.includes(id)}
+        addFavourite={addFavourite}
+        delFavourite={delFavourite}
+      />
+      <img
+        src={imageSource}
+        alt={`${username}'s photo`}
+        className="photo-list--image"
+        onClick={handleClick}
+      />
+      <div className="photo-list--user-details">
+        <img className="photo-list--user-profile" src={userAvatar} alt="" />
+        <div className="photo-list--user-info">
+          {username}
+          <div className="photo-list--user-location">
+            {city}, {country}
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
-};
-
-PhotoListItem.defaultProps = {
-  id: '1',
-  location: {
-    city: 'Montreal',
-    country: 'Canada',
-  },
-  imageSource: `${process.env.PUBLIC_URL}/Image-1-Regular.jpeg`,
-  username: 'Joe Example',
-  profile: `${process.env.PUBLIC_URL}/profile-1.jpg`,
 };
 
 export default PhotoListItem;

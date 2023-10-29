@@ -1,28 +1,33 @@
 import React from "react";
 import FavBadge from "./FavBadge";
-import FavIcon from "./FavIcon"; // Import FavIcon directly
+import FavIcon from "./FavIcon"; 
 import "../styles/PhotoFavButton.scss";
 
 const PhotoFavButton = ({
+  photoId,
+  favouritePhotos,
   isFavourite,
-  addToFavourites,
-  removeFromFavourites,
-  photo,
+  addFavourite,
+  delFavourite,
 }) => {
-  const handleFavIconClick = () => {
+
+  const toggleFavourite = () => {
     if (isFavourite) {
-      removeFromFavourites(photo);
+      delFavourite(photoId);
     } else {
-      addToFavourites(photo);
+      addFavourite(photoId);
     }
   };
 
-  // Use conditional rendering for FavBadge and FavIcon
-  const FavComponent = isFavourite ? <FavBadge /> : <FavIcon />;
-
   return (
-    <div className="photo-list--fav-icon" onClick={handleFavIconClick}>
-      {FavComponent}
+    <div className="photo-list--fav-icon" onClick={toggleFavourite}>
+      <div className="photo-list--fav-icon-svg">
+        {isFavourite ? (
+          <FavBadge favouritePhotos={favouritePhotos} isPhoto={true} />
+        ) : (
+          <FavIcon />
+        )}
+      </div>
     </div>
   );
 };

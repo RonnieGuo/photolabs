@@ -1,30 +1,41 @@
-import React from 'react';
-import '../styles/HomeRoute.scss';
-import PhotoList from '../components/PhotoList';
-import TopNavigationBar from '../components/TopNavigationBar';
+import React, { useState } from "react";
 
-const HomeRoute = ({
-  topics,
-  favorites,
-  toggleFavorite,
-  getPhotosByTopic,
-  photos,
-  openModal,
-}) => (
-  <div className="home-route">
-    <TopNavigationBar
-      topics={topics}
-      favorites={favorites}
-      toggleFavorite={toggleFavorite}
-      getPhotosByTopic={getPhotosByTopic}
-    />
-    <PhotoList
-      photos={photos}
-      openModal={openModal}
-      favorites={favorites}
-      toggleFavorite={toggleFavorite}
-    />
-  </div>
-);
+import TopNavigationBar from "../components/TopNavigationBar";
+import PhotoList from "../components/PhotoList";
+import PhotoDetailsModal from "../routes/PhotoDetailsModal";
+import "../styles/HomeRoute.scss";
+
+const HomeRoute = (props) => {
+  const {
+    topics,
+    photos,
+    openModal,
+    favouritePhotos,
+    addFavourite,
+    delFavourite,
+    selectedTopic,
+    setSelectedTopic,
+    closeModal
+  } = props;
+
+  return (
+    <div className="home-route">
+      <TopNavigationBar
+        topics={topics}
+        favouritePhotos={favouritePhotos}
+        selectedTopic={selectedTopic}
+        setSelectedTopic={setSelectedTopic}
+        closeModal={closeModal}
+      />
+      <PhotoList
+        photos={photos}
+        favouritePhotos={favouritePhotos}
+        addFavourite={addFavourite}
+        delFavourite={delFavourite}
+        openModal={openModal}
+      />
+    </div>
+  );
+};
 
 export default HomeRoute;

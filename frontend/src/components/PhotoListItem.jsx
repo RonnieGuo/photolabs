@@ -1,29 +1,40 @@
 import React from "react";
-
 import "../styles/PhotoListItem.scss";
 import PhotoFavButton from "./PhotoFavButton";
 
-// component for displaying photos in homepage
 const PhotoListItem = (props) => {
+  const {
+    id,
+    img,
+    favouriteList,
+    toggleFavourite,
+    imageClick,
+    element,
+    profile,
+    username,
+    city,
+    country,
+  } = props;
+
   return (
     <ol className="photo-list__item">
       <PhotoFavButton
-        favouriteList={props.favouriteList}
-        toggleFavourite={props.toggleFavourite}
-        id={props.id}
+        favouriteList={favouriteList}
+        toggleFavourite={toggleFavourite}
+        id={id}
       />
       <img
-        src={props.img}
+        src={img}
         alt=""
         className="photo-list__image"
-        onClick={() => props.imageClick(props.element)}
+        onClick={() => imageClick(element)}
       />
       <div className="photo-list__user-details">
-        <img src={props.profile} alt="" className="photo-list__user-profile" />
+        <img src={profile} alt="" className="photo-list__user-profile" />
         <div className="photo-list__user-info">
-          <div>{props.username}</div>
+          <div>{username}</div>
           <div className="photo-list__user-location">
-            {props.city}, {props.country}
+            {city}, {country}
           </div>
         </div>
       </div>

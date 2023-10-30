@@ -1,6 +1,6 @@
 import React from "react";
 
-import useApplicationData from "components/hooks/useApplicationData";
+import useApplicationData from "hooks/useApplicationData";
 import "./App.scss";
 import HomeRoute from "routes/HomeRoute";
 import PhotoDetailsModal from "routes/PhotoDetailsModal";

@@ -55,20 +55,20 @@ function reducer(state, action) {
 const useApplicationData = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    const fetchData = async (url, actionType) => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        dispatch({ type: actionType, payload: data });
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const fetchData = async (url, actionType) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    };
+      const data = await response.json();
+      dispatch({ type: actionType, payload: data });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
     // Fetch both photo and topic data
     fetchData("api/photos", ACTIONS.SET_PHOTO_DATA);
     fetchData("api/topics", ACTIONS.SET_TOPIC_DATA);

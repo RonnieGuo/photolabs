@@ -1,55 +1,33 @@
 import React from "react";
-import PhotoFavButton from "./PhotoFavButton";
+
 import "../styles/PhotoListItem.scss";
+import PhotoFavButton from "./PhotoFavButton";
 
+// component for displaying photos in homepage
 const PhotoListItem = (props) => {
-  const {
-    id,
-    username,
-    userAvatar,
-    city,
-    country,
-    imageSource,
-    isFavourite,
-    favouritePhotos,
-    addFavourite,
-    delFavourite,
-    openModal,
-    scrollToTop,
-  } = props;
-
-  // Function to open modal and scroll to the top
-  const handleClick = () => {
-    openModal(id);
-    scrollToTop();
-  };
-
   return (
-    <article className="photo-list--item">
-      {/* PhotoFavButton component for handling favorites */}
+    <ol className="photo-list__item">
       <PhotoFavButton
-        photoId={id}
-        favouritePhotos={favouritePhotos}
-        isFavourite={favouritePhotos.includes(id)}
-        addFavourite={addFavourite}
-        delFavourite={delFavourite}
+        favouriteList={props.favouriteList}
+        toggleFavourite={props.toggleFavourite}
+        id={props.id}
       />
       <img
-        src={imageSource}
-        alt={`${username}'s photo`}
-        className="photo-list--image"
-        onClick={handleClick}
+        src={props.img}
+        alt=""
+        className="photo-list__image"
+        onClick={() => props.imageClick(props.element)}
       />
-      <div className="photo-list--user-details">
-        <img className="photo-list--user-profile" src={userAvatar} alt="" />
-        <div className="photo-list--user-info">
-          {username}
-          <div className="photo-list--user-location">
-            {city}, {country}
+      <div className="photo-list__user-details">
+        <img src={props.profile} alt="" className="photo-list__user-profile" />
+        <div className="photo-list__user-info">
+          <div>{props.username}</div>
+          <div className="photo-list__user-location">
+            {props.city}, {props.country}
           </div>
         </div>
       </div>
-    </article>
+    </ol>
   );
 };
 

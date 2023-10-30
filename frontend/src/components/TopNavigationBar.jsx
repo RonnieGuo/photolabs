@@ -1,29 +1,25 @@
 import React from "react";
+
+import "../styles/TopNavigationBar.scss";
 import TopicList from "./TopicList";
 import FavBadge from "./FavBadge";
-import "../styles/TopNavigationBar.scss";
 
-const TopNavigation = (props) => {
-  const { topics, favouritePhotos, selectedTopic, setSelectedTopic, closeModal } = props;
-
-  // Function to reset active topic, close modal if open, and scroll to the top when the logo is clicked
-  const handleLogoClick = () => {
-    setSelectedTopic(null);
-    closeModal();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  
+const TopNavigationBar = (props) => {
   return (
     <div className="top-nav-bar">
-      <span className="top-nav-bar--logo" onClick={handleLogoClick}>PhotoLabs</span>
-      <TopicList
-        topics={topics}
-        selectedTopic={selectedTopic}
-        setSelectedTopic={setSelectedTopic}
-      />
-      <FavBadge favouritePhotos={favouritePhotos} />
+      <span className="top-nav-bar__logo">PhotoLabs</span>
+      <div className="nav-topic">
+        <TopicList
+          topics={props.topics}
+          topicClicked={props.topicClicked}
+          photoByTopic={props.photoByTopic}
+        />
+      </div>
+      <div className="nav-badge">
+        <FavBadge count={props.favouriteList?.length} />
+      </div>
     </div>
   );
 };
 
-export default TopNavigation;
+export default TopNavigationBar;

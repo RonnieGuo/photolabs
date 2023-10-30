@@ -3,13 +3,12 @@ import FavIcon from "./FavIcon";
 
 import "../styles/FavBadge.scss";
 
-const FavBadge = ({ favouritePhotos }) => {
-  // Check if favouritePhotos is defined
-  const isFavPhotoExist = Array.isArray(favouritePhotos) && favouritePhotos.length > 0;
-
+const FavBadge = ({ isFavPhotoExist, count }) => {
+  const selected = true;
   return (
     <div className="fav-badge">
-      <FavIcon width={20} height={17} fill="#C80000" displayAlert={isFavPhotoExist} />
+      <FavIcon selected={selected} displayAlert={!!isFavPhotoExist} />
+      <div className={count >= 1 ? "notification" : ""}></div>
     </div>
   );
 };

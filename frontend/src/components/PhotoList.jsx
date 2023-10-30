@@ -1,36 +1,33 @@
 import React from "react";
-import PhotoListItem from "./PhotoListItem";
+
 import "../styles/PhotoList.scss";
+import PhotoListItem from "./PhotoListItem";
 
+// component for rendering photolistitem
 const PhotoList = (props) => {
-  const {
-    photos,
-    favouritePhotos,
-    addFavourite,
-    delFavourite,
-    openModal,
-    scrollToTop,
-  } = props;
-
-  const photoItems = photos.map((photo) => (
-    <PhotoListItem
-      key={photo.id}
-      id={photo.id}
-      username={photo.user.username}
-      city={photo.location.city}
-      country={photo.location.country}
-      imageSource={photo.urls.regular}
-      userAvatar={photo.user.profile}
-      favouritePhotos={favouritePhotos}
-      isFavourite={favouritePhotos.includes(photo.id)}
-      addFavourite={addFavourite}
-      delFavourite={delFavourite}
-      openModal={openModal}
-      scrollToTop={scrollToTop}
-    />
-  ));
-
-  return <ul className="photo-list">{photoItems}</ul>;
+  return (
+    <ul className="photo-list">
+      {props.photos.map((element) => {
+        return (
+          <PhotoListItem
+            count={props.count}
+            key={element.id}
+            id={element.id}
+            img={element.urls.regular}
+            profile={element.user.profile}
+            city={element.location.city}
+            country={element.location.country}
+            username={element.user.name}
+            imageClick={props.imageClick}
+            modal={props.modal}
+            element={element}
+            favouriteList={props.favouriteList}
+            toggleFavourite={props.toggleFavourite}
+          />
+        );
+      })}
+    </ul>
+  );
 };
 
 export default PhotoList;

@@ -1,38 +1,24 @@
 import React, { useState } from "react";
-
-import TopNavigationBar from "../components/TopNavigationBar";
 import PhotoList from "../components/PhotoList";
-import PhotoDetailsModal from "../routes/PhotoDetailsModal";
-import "../styles/HomeRoute.scss";
+import TopNavigationBar from "../components/TopNavigationBar";
 
+// Home route for rendering both the top navigation bar and photolist
 const HomeRoute = (props) => {
-  const {
-    topics,
-    photos,
-    openModal,
-    favouritePhotos,
-    addFavourite,
-    delFavourite,
-    selectedTopic,
-    setSelectedTopic,
-    closeModal
-  } = props;
-
   return (
     <div className="home-route">
       <TopNavigationBar
-        topics={topics}
-        favouritePhotos={favouritePhotos}
-        selectedTopic={selectedTopic}
-        setSelectedTopic={setSelectedTopic}
-        closeModal={closeModal}
+        topics={props.topics}
+        count={props.count}
+        favouriteList={props.favouriteList}
+        topicClicked={props.topicClicked}
+        photoByTopic={props.photoByTopic}
       />
       <PhotoList
-        photos={photos}
-        favouritePhotos={favouritePhotos}
-        addFavourite={addFavourite}
-        delFavourite={delFavourite}
-        openModal={openModal}
+        count={props.count}
+        photos={props.photos}
+        imageClick={props.imageClick}
+        favouriteList={props.favouriteList}
+        toggleFavourite={props.toggleFavourite}
       />
     </div>
   );

@@ -1,27 +1,25 @@
 import React from "react";
-import TopicListItem from "./TopicListItem";
+
 import "../styles/TopicList.scss";
+import TopicListItem from "./TopicListItem";
 
-const TopicList = ({ topics, selectedTopic, setSelectedTopic }) => {
-  const handleTopicClick = (topic) => {
-    setSelectedTopic(topic);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
+// component for rendering topic list item
+const TopicList = (props) => {
   return (
-    <div className="top-nav-bar--topic-list">
-      {topics.map((topic) => (
-        <TopicListItem
-          key={topic.id}
-          label={topic.title}
-          link="#"
-          onClick={() => handleTopicClick(topic)}
-          active={selectedTopic && selectedTopic === topic.id}
-        />
-      ))}
+    <div className="top-nav-bar__topic-list">
+      {props.topics.map((element) => {
+        return (
+          <TopicListItem
+            key={element.id}
+            topic={element.title}
+            topicClicked={props.topicClicked}
+            photoByTopic={props.photoByTopic}
+            topicId={element.id}
+          />
+        );
+      })}
     </div>
   );
-  
 };
 
 export default TopicList;

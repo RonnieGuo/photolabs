@@ -1,50 +1,40 @@
-import React, { useState } from "react";
-
-import HomeRoute from "./routes/HomeRoute";
-import PhotoDetailsModal from "./routes/PhotoDetailsModal";
+import React from "react";
 import useApplicationData from "./hooks/useApplicationData";
+import TopNavigationBar from "./components/TopNavigationBar";
+import PhotoList from "./components/PhotoList";
+
 import "./App.scss";
 
-const App = () => {
+function App() {
   const {
     topics,
     photos,
-    selectedPhoto,
-    favouritePhotos,
+    selectedTopic,
+    setSelectedTopic,
     openModal,
     closeModal,
     addFavourite,
     delFavourite,
-    selectedTopic,
-    setSelectedTopic
+    favouritePhotos,
   } = useApplicationData();
 
   return (
     <div className="App">
-      <HomeRoute
+      <TopNavigationBar
         topics={topics}
-        photos={photos}
-        openModal={openModal}
-        closeModal={closeModal}
-        favouritePhotos={favouritePhotos}
-        addFavourite={addFavourite}
-        delFavourite={delFavourite}
         selectedTopic={selectedTopic}
         setSelectedTopic={setSelectedTopic}
+        closeModal={closeModal}
       />
-      {selectedPhoto && (
-        <PhotoDetailsModal
-          photoId={selectedPhoto}
-          photos={photos}
-          openModal={openModal}
-          closeModal={closeModal}
-          favouritePhotos={favouritePhotos}
-          addFavourite={addFavourite}
-          delFavourite={delFavourite}
-        />
-      )}
+      <PhotoList
+        photos={photos}
+        openModal={openModal}
+        addFavourite={addFavourite}
+        delFavourite={delFavourite}
+        favouritePhotos={favouritePhotos}
+      />
     </div>
   );
-};
+}
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 
 export const ACTIONS = {
   FAV_PHOTO_ADDED: "FAV_PHOTO_ADDED",
@@ -7,9 +7,10 @@ export const ACTIONS = {
   SET_TOPIC_DATA: "SET_TOPIC_DATA",
   DISPLAY_PHOTO_DETAILS: "DISPLAY_PHOTO_DETAILS",
   SET_SELECTED_TOPIC: "SET_SELECTED_TOPIC",
+  SET_INITIAL_DATA: "SET_INITIAL_DATA",
 };
 
-// reducer to update the current state
+// reducer to update current state
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.FAV_PHOTO_ADDED:
@@ -44,14 +45,19 @@ function reducer(state, action) {
         ...state,
         selectedTopic: action.payload.topic ? action.payload.topic.id : null,
       };
+    case ACTIONS.SET_INITIAL_DATA:
+      return {
+        ...state,
+        photos: action.payload.photos,
+        topics: action.payload.topics,
+      };
     default:
       throw new Error(
-        `Tried to reduce with an unsupported action type: ${action.type}`
+        `Tried to reduce with unsupported action type: ${action.type}`
       );
   }
 }
 
-// custom hook
 export default function useApplicationData() {
   const initialState = {
     selectedPhoto: null,
@@ -89,43 +95,34 @@ export default function useApplicationData() {
     dispatch({ type: ACTIONS.SET_SELECTED_TOPIC, payload: { topic } });
   };
 
-  // Fetch topic data and photo data from the API
+  // Function to fetch both photos and topics and update the state
+  const fetchData = async () => {
+    try {
+      const [photosResponse, topicsResponse] = await Promise.all([
+        fetch("/api/photos"),
+        fetch("/api/topics"),
+      ]);
+
+      const [photosData, topicsData] = await Promise.all([
+        photosResponse.json(),
+        topicsResponse.json(),
+      ]);
+
+      dispatch({
+        type: ACTIONS.SET_INITIAL_DATA,
+        payload: {
+          photos: photosData,
+          topics: topicsData,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    // Fetch topics
-    fetch("http://localhost:8001/api/topics")
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch({
-          type: ACTIONS.SET_TOPIC_DATA,
-          payload: { topics: data },
-        });
-      })
-      .catch((error) => {
-        console.log("Error fetching topics:", error);
-      });
-
-    // Fetch photos based on the selected topic
-    let url = `http://localhost:8001/api/${
-      state.selectedTopic ? `topics/photos/${state.selectedTopic}` : "photos"
-    }`;
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch({
-          type: ACTIONS.SET_PHOTO_DATA,
-          payload: { photos: data },
-        });
-      })
-      .catch((error) => {
-        console.log(
-          state.selectedTopic
-            ? "Error fetching photos by topic:"
-            : "Error fetching photos:",
-          error
-        );
-      });
-  }, [state.selectedTopic]);
+    fetchData();
+  }, []);
 
   return {
     selectedPhoto: state.selectedPhoto,

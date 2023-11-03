@@ -16,8 +16,8 @@ const Photo = (props) => {
   } = props;
 
   return (
-    <li className="photo-item">
-      <div className="image">
+    <li className="modal_photo-list__photo-item">
+      <div className="modal_photo-list__user-image">
         <PhotoFavButton
           count={count}
           favouriteList={favouriteList}
@@ -26,11 +26,11 @@ const Photo = (props) => {
         />
         <img src={img} alt={username} />
       </div>
-      <div className="user-details">
-        <img src={profile} alt={username} className="user-profile" />
-        <div className="user-info">
+      <div className="modal_photo-list__user-details">
+        <img src={profile} alt={username} className="modal_photo-list__user-profile" />
+        <div className="modal_photo-list__user-info">
           <div>{username}</div>
-          <div className="user-location">
+          <div className="modal_photo-list__user-location">
             {city}, {country}
           </div>
         </div>

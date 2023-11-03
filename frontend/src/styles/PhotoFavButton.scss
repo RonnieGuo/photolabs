@@ -13,6 +13,12 @@
 }
 
 .photo-list__fav-icon-svg {
-  padding: 7px;
-  top: 2px;
+  display: flex;
+  padding-top: 6px;
+  padding-left: 1px;
 }
+
+.photo-list__fav-icon button {
+ background-color: transparent;
+ border: none;
+}  

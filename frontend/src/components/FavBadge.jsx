@@ -1,14 +1,10 @@
 import React from "react";
 import FavIcon from "./FavIcon";
-import "../styles/FavBadge.scss";
 
-const FavBadge = ({ isFavPhotoExist, count }) => {
-  const selected = true;
-
+const FavBadge = ({ count }) => {
   return (
     <div className="fav-badge">
-      <FavIcon selected={selected} displayAlert={isFavPhotoExist} />
-      <div className={count >= 1 ? "notification" : ""}></div>
+      <FavIcon selected={true} displayAlert={count > 0} />
     </div>
   );
 };

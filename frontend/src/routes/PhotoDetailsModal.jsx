@@ -38,6 +38,7 @@ const PhotoDetailsModal = (props) => {
         photos={photolist}
         favouriteList={props.favouriteList}
         toggleFavourite={props.toggleFavourite}
+        imageClick={()=>{}}
       />
     </div>
   );
